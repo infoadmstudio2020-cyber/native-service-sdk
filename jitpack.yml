@@ -1,3 +1,5 @@
+# JitPack configuration for Android Library
+# https://jitpack.io/docs/
 jdk:
   - openjdk17
 before_install:

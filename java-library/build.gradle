@@ -11,7 +11,7 @@ android {
         minSdk 21
         targetSdk 34
         versionCode 1
-        versionName "1.0.1"
+        versionName "1.0.2"
         consumerProguardFiles "consumer-rules.pro"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -49,6 +49,21 @@ dependencies {
     implementation 'com.github.infoadmstudio2020-cyber:native-logger-sdk:v1.0.1'
 }
 
+
+        
+    
+
+    // Configure task ordering without circular or recursive execution
+    tasks.matching { it.name in ['publishToMavenLocal', 'publishReleasePublicationToMavenLocal'] }.configureEach {
+        mustRunAfter(tasks.matching { it.name == 'assembleRelease' })
+    }
+
+
+// =====================================================
+// MAVEN PUBLISH CONFIGURATION (JitPack & Maven Central)
+// Note: For transitive dependencies exposed to consumers,
+// use 'api' instead of 'implementation' in dependencies { ... }
+// =====================================================
 afterEvaluate {
     publishing {
         publications {
@@ -59,18 +74,25 @@ afterEvaluate {
                 version    = '1.0.0'
 
                 pom {
-                    name        = 'NativeServiceSDK'
-                    description = 'Service abstractions and service integration for NativeRuntime.'
+                    name        = 'native-service-sdk'
+                    description = 'Android Library'
                     url         = 'https://github.com/infoadmstudio2020-cyber/native-service-sdk'
                     licenses {
                         license {
                             name = 'Apache-2.0'
+                            url  = 'https://opensource.org/licenses/Apache-2.0'
                         }
                     }
                     developers {
                         developer {
+                            id   = 'infoadmstudio2020-cyber'
                             name = 'infoadmstudio2020-cyber'
                         }
+                    }
+                    scm {
+                        connection         = 'scm:git:github.com/infoadmstudio2020-cyber/native-service-sdk.git'
+                        developerConnection = 'scm:git:ssh://github.com/infoadmstudio2020-cyber/native-service-sdk.git'
+                        url                = 'https://github.com/infoadmstudio2020-cyber/native-service-sdk/tree/main'
                     }
                 }
             }
@@ -78,7 +100,7 @@ afterEvaluate {
     }
 
     // Configure task ordering without circular or recursive execution
-    tasks.matching { it.name in ['publishToMavenLocal', 'publishReleasePublicationToMavenLocal'] }.configureEach {
-        mustRunAfter(tasks.matching { it.name == 'assembleRelease' })
+    tasks.matching { it.name in ['publishToMavenLocal', 'publishReleasePublicationToMavenLocal', 'publishMavenJavaPublicationToMavenLocal'] }.configureEach {
+        mustRunAfter(tasks.matching { it.name in ['assembleRelease'] })
     }
 }

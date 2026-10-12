@@ -22,7 +22,7 @@ Add the dependency:
 
 ```gradle
 dependencies {
-    implementation 'com.github.infoadmstudio2020-cyber:native-service-sdk:v1.0.1'
+    implementation 'com.github.infoadmstudio2020-cyber:native-service-sdk:v1.0.2'
 }
 ```
 
